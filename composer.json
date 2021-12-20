@@ -6,8 +6,8 @@
     "autoload": {
         "psr-4": {
             "Database\\Models\\": "src/models/",
-            "Database\\Factories\\": "src/database/factories/",
-            "Database\\Seeders\\": "src/database/seeders/"
+            "Database\\Factories\\": "src/factories/",
+            "Database\\Seeders\\": "src/seeders/"
         }
     },
     "require": {
