@@ -49,4 +49,11 @@ class Person extends Model
     {
         return $this->hasOne(PersonalAccount::class);
     }
+
+    // phpcs:ignore
+    public function events()
+    {
+        return $this->belongsToMany(Person::class, 'event_person', 'person_id', 'event_id')
+            ->using(EventPerson::class)->withTimestamps();
+    }
 }
