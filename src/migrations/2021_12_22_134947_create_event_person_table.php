@@ -14,12 +14,13 @@ class CreateEventPersonTable extends Migration
     public function up()
     {
         Schema::create('event_person', function (Blueprint $table) {
+            $table->id();
             $table->foreignId("event_id");
             $table->foreignId("person_id");
             $table->foreignId("transaction_id")->nullable()->default(null);
             $table->json("data");
             $table->timestamps();
-            $table->primary(["event_id", "person_id"]);
+            $table->unique(["event_id", "person_id"]);
         });
     }
 
