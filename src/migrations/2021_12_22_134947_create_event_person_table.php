@@ -1,5 +1,6 @@
 <?php
 
+use Database\Models\Config;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,6 +23,8 @@ class CreateEventPersonTable extends Migration
             $table->timestamps();
             $table->unique(["event_id", "person_id"]);
         });
+
+        Config::create(['name' => 'events.transaction', 'value' => 'Event #{event.id}']);
     }
 
     /**
@@ -31,6 +34,7 @@ class CreateEventPersonTable extends Migration
      */
     public function down()
     {
+        Config::destroy('events.transaction');
         Schema::dropIfExists('event_person');
     }
 }
