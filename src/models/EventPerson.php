@@ -13,6 +13,12 @@ class EventPerson extends Pivot
         'data'
     ];
 
+    protected $casts = [
+        'data' => 'object'
+    ];
+
+    public $incrementing = true;
+
     public function event()
     {
         return $this->belongsTo(Event::class);
