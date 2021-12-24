@@ -19,11 +19,15 @@ class Person extends Model
         'edu_token'
     ];
 
-    protected $appends = ['fullname'];
+    protected $appends = ['fullname', 'is_member'];
 
     public function getFullnameAttribute()
     {
         return $this->firstname . " " . $this->lastname;
+    }
+
+    public function getIsMemberAttribute() {
+        return $this->member()->exists();
     }
 
     // phpcs:ignore
