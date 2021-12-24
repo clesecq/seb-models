@@ -14,7 +14,9 @@ class Event extends Model
         'data' => 'array',
         'inscriptions_closed_at' => 'datetime',
         'start' => 'datetime',
-        'end' => 'datetime'
+        'end' => 'datetime',
+        'price' => 'double',
+        'price_member' => 'double'
     ];
 
     protected $fillable = [
