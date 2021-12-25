@@ -38,10 +38,9 @@ class Event extends Model
     }
 
     // phpcs:ignore
-    public function persons()
+    public function participations()
     {
-        return $this->belongsToMany(Person::class, 'event_person', 'event_id', 'person_id')
-            ->using(EventPerson::class)->withTimestamps();
+        return $this->hasMany(EventPerson::class);
     }
 
     public function price($data, Person $person) {

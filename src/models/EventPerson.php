@@ -2,9 +2,9 @@
 
 namespace Database\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Model;
 
-class EventPerson extends Pivot
+class EventPerson extends Model
 {
     protected $fillable = [
         'event_id',
@@ -16,8 +16,6 @@ class EventPerson extends Pivot
     protected $casts = [
         'data' => 'object'
     ];
-
-    public $incrementing = true;
 
     public function event()
     {

@@ -14,7 +14,7 @@ class CreateEventPersonTable extends Migration
      */
     public function up()
     {
-        Schema::create('event_person', function (Blueprint $table) {
+        Schema::create('event_people', function (Blueprint $table) {
             $table->id();
             $table->foreignId("event_id");
             $table->foreignId("person_id");
@@ -35,6 +35,6 @@ class CreateEventPersonTable extends Migration
     public function down()
     {
         Config::destroy('events.transaction');
-        Schema::dropIfExists('event_person');
+        Schema::dropIfExists('event_people');
     }
 }
