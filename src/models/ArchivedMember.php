@@ -37,4 +37,10 @@ class ArchivedMember extends Model
     {
         return $this->belongsTo(Transaction::class);
     }
+
+    // phpcs:ignore
+    public function person()
+    {
+        return $this->belongsTo(Person::class);
+    }
 }

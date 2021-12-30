@@ -37,6 +37,12 @@ class Person extends Authenticatable
     }
 
     // phpcs:ignore
+    public function archived_members()
+    {
+        return $this->hasMany(ArchivedMember::class);
+    }
+
+    // phpcs:ignore
     public function sales()
     {
         return $this->hasMany(Sale::class);
