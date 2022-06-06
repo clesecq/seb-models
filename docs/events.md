@@ -42,6 +42,26 @@ This field stores a boolean (either `true` or `false`). It has 4 properties :
 }
 ```
 
+### Type : numeric
+
+#### Description
+
+This field stores an integer. It has 4 properties :
+ - `name` : Name of the field
+ - `type` : `"numeric"`
+ - `price` : Positive or negative number. Will be added to the final price of the event, if the person registering for the event isn't a member
+ - `price_member`: Positive or negative number. Will be added to the final price of the event, if the person registering for the event is a member
+
+#### Example
+
+```json
+{
+    "name": "Saucisson",
+    "type": "numeric",
+    "price": 3,
+    "price_member": 2
+}
+```
 ### Type: select
 
 #### Description

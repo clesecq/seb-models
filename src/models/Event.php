@@ -25,7 +25,6 @@ class Event extends Model
         'inscriptions_closed_at',
         'start',
         'end',
-        'max_people',
         'price',
         'price_member',
         'data',
@@ -47,15 +46,17 @@ class Event extends Model
         $member = $person->member()->exists();
         $price = $member ? $this->price_member : $this->price;
 
-        foreach($this->data as $dat) {
-            if ($dat["type"] == "boolean") {
-                if ($data[$dat["name"]] == true) {
-                    $price += $member ? $dat["price_member"] : $dat["price"];
+        foreach($this->data as $field) {
+            if ($field["type"] == "boolean") {
+                if ($data[$field["name"]]) {
+                    $price += $member ? $field["price_member"] : $field["price"];
                 }
-            } else if ($dat["type"] == "select") {
+            } else if ($field["type"] == "numeric") {
+                $price += ($member ? $field["price_member"] : $field["price"]) * $data[$field["name"]];
+            } else if ($field["type"] == "select") {
                 $good = false;
-                foreach($dat["values"] as $val) {
-                    if ($data[$dat["name"]] == $val["name"]) {
+                foreach($field["values"] as $val) {
+                    if ($data[$field["name"]] == $val["name"]) {
                         $price += $member ? $val["price_member"] : $val["price"];
                         $good = true;
                         break;
@@ -80,6 +81,9 @@ class Event extends Model
                     break;
                 case "boolean":
                     $output['data.' . $element["name"]] = ['required', 'boolean'];
+                    break;
+                case "numeric":
+                    $output['data.' . $element["name"]] = ['required', 'numeric'];
                     break;
                 case "select":
                     $values = [];
