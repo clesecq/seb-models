@@ -2,10 +2,16 @@
 
 namespace Database\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Represent a fast auth token in the database
+ * Fast auth token is used for scanning QR codes to log in.
+ */
 class FastAuthToken extends Model
 {
     use HasFactory;
@@ -29,13 +35,18 @@ class FastAuthToken extends Model
     /**
      * Get the prunable model query.
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
-    public function prunable()
+    public function prunable() : Builder
     {
         return static::where('created_at', '<=', now()->subMinutes(5));
     }
 
+    /**
+     * Create a new fast auth token
+     *
+     * @return void
+     */
     public static function boot()
     {
         parent::boot();
@@ -45,7 +56,13 @@ class FastAuthToken extends Model
         });
     }
 
-    public function user() {
+    /**
+     * Get the user associated with this fast auth token
+     *
+     * @return BelongsTo
+     */
+    public function user() : BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 }

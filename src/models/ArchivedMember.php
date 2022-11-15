@@ -4,7 +4,11 @@ namespace Database\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Represent an archived member in the database
+ */
 class ArchivedMember extends Model
 {
     use HasFactory;
@@ -23,23 +27,41 @@ class ArchivedMember extends Model
 
     protected $appends = ['paid', 'school_year'];
 
-    public function getPaidAttribute()
+    /**
+     * Check if this member has paid
+     *
+     * @return bool
+     */
+    public function getPaidAttribute() : bool
     {
         return $this->transaction_id != null;
     }
 
-    public function getSchoolYearAttribute()
+    /**
+     * Get the string of school year for this archived member
+     *
+     * @return string
+     */
+    public function getSchoolYearAttribute() : string
     {
         return ($this->year - 1) . '/' . ($this->year);
     }
 
-    public function transaction()
+    /**
+     * Get the transaction associated with this archived member
+     * @return BelongsTo
+     */
+    public function transaction() : BelongsTo
     {
         return $this->belongsTo(Transaction::class);
     }
 
+    /**
+     * Get the person associated with this archived member
+     * @return BelongsTo
+     */
     // phpcs:ignore
-    public function person()
+    public function person() : BelongsTo
     {
         return $this->belongsTo(Person::class);
     }

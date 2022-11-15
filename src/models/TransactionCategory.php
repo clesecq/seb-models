@@ -4,7 +4,11 @@ namespace Database\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Represent a product category in the database
+ */
 class TransactionCategory extends Model
 {
     protected $fillable = [
@@ -12,7 +16,12 @@ class TransactionCategory extends Model
         "name"
     ];
 
-    public function transactions()
+    /**
+     * Get the transactions associated with this category
+     *
+     * @return HasMany
+     */
+    public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class, 'category_id');
     }

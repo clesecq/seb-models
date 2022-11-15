@@ -4,7 +4,11 @@ namespace Database\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use StringTemplate\Engine;
 
+/**
+ * Represent an entry of config in the database
+ */
 class Config extends Model
 {
     use HasFactory;
@@ -17,19 +21,38 @@ class Config extends Model
     protected $primaryKey = 'name';
     public $timestamps = false;
 
-    public static function number(string $name)
+    /**
+     * Get the float value of this config entry
+     *
+     * @param string $name The name of the config entry
+     * @return float
+     */
+    public static function number(string $name) : float
     {
         return floatval(static::findOrFail($name)->value);
     }
 
-    public static function integer(string $name)
+    /**
+     * Get the int value of this config entry
+     *
+     * @param string $name The name of the config entry
+     * @return int
+     */
+    public static function integer(string $name) : int
     {
         return intval(static::findOrFail($name)->value);
     }
 
-    public static function format(string $name, $param)
+    /**
+     * Get the string value of this config entry
+     *
+     * @param string $name The name of the config entry
+     * @param array|string $param The data to use for the template
+     * @return string
+     */
+    public static function format(string $name, $param) : string
     {
-        $engine = new \StringTemplate\Engine;
+        $engine = new Engine;
         return $engine->render(static::findOrFail($name)->value, $param);
     }
 }

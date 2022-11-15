@@ -4,8 +4,13 @@ namespace Database\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Validation\Rule;
 
+/**
+ * Represent an event in the database
+ */
 class Event extends Model
 {
     use HasFactory;
@@ -31,18 +36,36 @@ class Event extends Model
         'category_id'
     ];
 
-    public function category()
+    /**
+     * Get the category associated with this event
+     *
+     * @return BelongsTo
+     */
+    public function category() : BelongsTo
     {
         return $this->belongsTo(TransactionCategory::class);
     }
 
+    /**
+     * Get the participants associated with this event
+     *
+     * @return HasMany
+     */
     // phpcs:ignore
-    public function participations()
+    public function participations() : HasMany
     {
         return $this->hasMany(EventPerson::class);
     }
 
-    public function price($data, Person $person) {
+    /**
+     * Get the price for a participant of this event
+     *
+     * @param mixed $data data on inscription of the participant
+     * @param Person $person the participant to get the price for
+     * @return float|int
+     */
+    public function price(mixed $data, Person $person) : int|float
+    {
         $member = $person->member()->exists();
         $price = $member ? $this->price_member : $this->price;
 
@@ -70,7 +93,13 @@ class Event extends Model
         return $price;
     }
 
-    public function validator($sometimes = false)
+    /**
+     * Get the validation rules for this event
+     *
+     * @param bool $sometimes if the data is sometimes valid
+     * @return array
+     */
+    public function validator(bool $sometimes = false) : array
     {
         $output = [];
         $keys = [];
