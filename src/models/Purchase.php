@@ -4,17 +4,32 @@ namespace Database\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Represent a purchase in the database
+ */
 class Purchase extends Model
 {
     use HasFactory;
 
-    public function movement()
+
+    /**
+     * Get the movement associated with this purchase
+     *
+     * @return BelongsTo
+     */
+    public function movement(): BelongsTo
     {
         return $this->belongsTo(Movement::class);
     }
 
-    public function transaction()
+    /**
+     * Get the transaction associated with this purchase
+     *
+     * @return BelongsTo
+     */
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class);
     }

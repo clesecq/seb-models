@@ -4,12 +4,21 @@ namespace Database\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Represent a transaction in the database
+ */
 class Transaction extends Model
 {
     use HasFactory;
 
-    protected static function booted()
+    /**
+     * Perform any actions required after the model boots.
+     *
+     * @return void
+     */
+    protected static function booted(): void
     {
         static::created(function ($transaction) {
             if (config('recalculate_for_all_transaction', true)) {
@@ -32,12 +41,22 @@ class Transaction extends Model
         'category_id'
     ];
 
-    public function account()
+    /**
+     * Get the account associated with this transaction
+     *
+     * @return BelongsTo
+     */
+    public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
     }
 
-    public function category()
+    /**
+     * Get the category associated with this transaction
+     *
+     * @return BelongsTo
+     */
+    public function category(): BelongsTo
     {
         return $this->belongsTo(TransactionCategory::class);
     }

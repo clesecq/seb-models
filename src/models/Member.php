@@ -4,8 +4,12 @@ namespace Database\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Represent a member in the database
+ */
 class Member extends Model
 {
     use HasFactory;
@@ -20,23 +24,43 @@ class Member extends Model
 
     protected $appends = ['paid'];
 
-    public function getPaidAttribute()
+    /**
+     * Check if this member has paid
+     *
+     * @return bool
+     */
+    public function getPaidAttribute() : bool
     {
         return $this->transaction_id != null;
     }
 
-    public function transaction()
+    /**
+     * Get the transaction associated with this member
+     *
+     * @return BelongsTo
+     */
+    public function transaction() : BelongsTo
     {
         return $this->belongsTo(Transaction::class);
     }
 
+    /**
+     * Get the person associated with this member
+     *
+     * @return BelongsTo
+     */
     // phpcs:ignore
-    public function person()
+    public function person() : BelongsTo
     {
         return $this->belongsTo(Person::class);
     }
 
-    public function pay()
+    /**
+     * Create a transaction when the member pays the fee
+     *
+     * @return void
+     */
+    public function pay() : void
     {
         if ($this->transaction_id == null) {
             $message = Config::format(
@@ -56,7 +80,13 @@ class Member extends Model
         }
     }
 
-    public static function archive(...$params)
+    /**
+     * Archive this member
+     *
+     * @param int|null ...$params year
+     * @return void
+     */
+    public static function archive(int|null ...$params) : void
     {
         if (count($params) >= 1) {
             $year = $params[0];

@@ -3,11 +3,15 @@
 namespace Database\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
+/**
+ * Represent a user in the database
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable;
@@ -46,7 +50,12 @@ class User extends Authenticatable
         'permissions' => 'array'
     ];
 
-    public function hasPermission(string $name)
+    /**
+     * Check if the user has a specific permission
+     * @param string $name The name of the permission
+     * @return bool
+     */
+    public function hasPermission(string $name): bool
     {
         $split = explode('.', $name);
         $resource = $split[0];
@@ -58,7 +67,11 @@ class User extends Authenticatable
                in_array($name, $this->permissions);
     }
 
-    public function person()
+    /**
+     * Return the person associated with this user
+     * @return BelongsTo
+     */
+    public function person(): BelongsTo
     {
         return $this->belongsTo(Person::class);
     }

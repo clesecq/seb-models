@@ -3,7 +3,11 @@
 namespace Database\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Represent a participant in the database
+ */
 class EventPerson extends Model
 {
     protected $fillable = [
@@ -17,17 +21,32 @@ class EventPerson extends Model
         'data' => 'object'
     ];
 
-    public function event()
+    /**
+     * Get the event associated with this participant
+     *
+     * @return BelongsTo
+     */
+    public function event() : BelongsTo
     {
         return $this->belongsTo(Event::class);
     }
 
-    public function person()
+    /**
+     * Get the person associated with this participant
+     *
+     * @return BelongsTo
+     */
+    public function person() : BelongsTo
     {
         return $this->belongsTo(Person::class);
     }
 
-    public function transaction()
+    /**
+     * Get the transaction associated with this participant
+     *
+     * @return BelongsTo
+     */
+    public function transaction() : BelongsTo
     {
         return $this->belongsTo(Transaction::class);
     }
