@@ -44,8 +44,6 @@ class AddPeopleUser extends Migration
 
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('firstname');
-        });
-        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('lastname');
         });
     }
@@ -57,6 +55,6 @@ class AddPeopleUser extends Migration
      */
     public function down()
     {
-        //
+        // TODO: reverse the migration
     }
 }
