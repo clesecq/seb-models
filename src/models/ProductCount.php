@@ -15,19 +15,17 @@ class ProductCount extends Model
 
     protected $fillable = [
         'movement_id',
-        'data'
+        'data',
     ];
 
     protected $casts = [
-        'data' => 'array'
+        'data' => 'array',
     ];
 
     /**
      * Get the movement associated with this count
-     *
-     * @return BelongsTo
      */
-    public function movement() : BelongsTo
+    public function movement(): BelongsTo
     {
         return $this->belongsTo(Movement::class);
     }

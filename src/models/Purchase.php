@@ -13,11 +13,8 @@ class Purchase extends Model
 {
     use HasFactory;
 
-
     /**
      * Get the movement associated with this purchase
-     *
-     * @return BelongsTo
      */
     public function movement(): BelongsTo
     {
@@ -26,8 +23,6 @@ class Purchase extends Model
 
     /**
      * Get the transaction associated with this purchase
-     *
-     * @return BelongsTo
      */
     public function transaction(): BelongsTo
     {
@@ -37,6 +32,6 @@ class Purchase extends Model
     protected $fillable = [
         'transaction_id',
         'movement_id',
-        'name'
+        'name',
     ];
 }

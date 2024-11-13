@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
+// @codingStandardsIgnoreLine
 class CreatePeopleTable extends Migration
 {
     /**
@@ -33,7 +34,7 @@ class CreatePeopleTable extends Migration
                 'lastname' => $member->lastname,
                 'discord_id' => $member->discord_id,
                 'created_at' => $member->created_at,
-                'updated_at' => $member->updated_at
+                'updated_at' => $member->updated_at,
             ]);
 
             DB::table('members')->where('id', $member->id)->update(['person_id' => $id]);
@@ -41,26 +42,17 @@ class CreatePeopleTable extends Migration
 
         Schema::table('members', function (Blueprint $table) {
             $table->dropColumn('firstname');
-        });
-        Schema::table('members', function (Blueprint $table) {
             $table->dropColumn('lastname');
-        });
-        Schema::table('members', function (Blueprint $table) {
             $table->dropColumn('discord_id');
-            $table->foreignId('person_id')->change();
+            $table->foreignId('person_id')->nullable()->default(null)->change();
         });
 
-        // Warning: We assume we don't have any archived membre when running the query (true at the moment of writing this)
+        // Warning: We assume we don't have any archived membre when running the query
+        // (true at the moment of writing this)
         Schema::table('archived_members', function (Blueprint $table) {
             $table->dropColumn('firstname');
-        });
-        Schema::table('archived_members', function (Blueprint $table) {
             $table->dropColumn('lastname');
-        });
-        Schema::table('archived_members', function (Blueprint $table) {
             $table->dropColumn('discord_id');
-        });
-        Schema::table('archived_members', function (Blueprint $table) {
             $table->foreignId('person_id');
         });
     }
@@ -85,7 +77,7 @@ class CreatePeopleTable extends Migration
             DB::table('members')->where('id', $member->id)->update([
                 'firstname' => $person->firstname,
                 'lastname' => $person->lastname,
-                'discord_id' => $person->discord_id
+                'discord_id' => $person->discord_id,
             ]);
         }
 

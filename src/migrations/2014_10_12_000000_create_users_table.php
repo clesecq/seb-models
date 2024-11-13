@@ -2,10 +2,11 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 
+// @codingStandardsIgnoreLine
 class CreateUsersTable extends Migration
 {
     /**
@@ -34,11 +35,18 @@ class CreateUsersTable extends Migration
             'lastname' => 'NORRIS',
             'email' => 'root@localhost',
             'password' => Hash::make('rootroot'),
-            'permissions' => '["*.*"]'
+            'permissions' => '["*.*"]',
         ]);
 
         // Ensure next IDs are > 1000.
-        DB::table('users')->insert(['id' => 999, 'username' => 'a', 'firstname' => 'a', 'lastname' => 'a', 'email' => 'a', 'password' => 'a']);
+        DB::table('users')->insert([
+            'id' => 999,
+            'username' => 'a',
+            'firstname' => 'a',
+            'lastname' => 'a',
+            'email' => 'a',
+            'password' => 'a'
+        ]);
         DB::table('users')->where('id', 999)->delete();
     }
 

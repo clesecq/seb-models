@@ -15,57 +15,49 @@ class Member extends Model
     use HasFactory;
 
     protected $casts = [
-        'paid' => 'boolean'
+        'paid' => 'boolean',
     ];
 
     protected $fillable = [
-        'person_id'
+        'person_id',
     ];
 
     protected $appends = ['paid'];
 
     /**
      * Check if this member has paid
-     *
-     * @return bool
      */
-    public function getPaidAttribute() : bool
+    public function getPaidAttribute(): bool
     {
         return $this->transaction_id != null;
     }
 
     /**
      * Get the transaction associated with this member
-     *
-     * @return BelongsTo
      */
-    public function transaction() : BelongsTo
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class);
     }
 
     /**
      * Get the person associated with this member
-     *
-     * @return BelongsTo
      */
     // phpcs:ignore
-    public function person() : BelongsTo
+    public function person(): BelongsTo
     {
         return $this->belongsTo(Person::class);
     }
 
     /**
      * Create a transaction when the member pays the fee
-     *
-     * @return void
      */
-    public function pay() : void
+    public function pay(): void
     {
         if ($this->transaction_id == null) {
             $message = Config::format(
-                "members.contribution.transaction",
-                ["member" => $this->person->attributesToArray()]
+                'members.contribution.transaction',
+                ['member' => $this->person->attributesToArray()]
             );
 
             $this->transaction_id = Transaction::create([
@@ -74,7 +66,7 @@ class Member extends Model
                 'rectification' => false,
                 'user_id' => Auth::id() ?? 1,
                 'account_id' => Config::integer('members.contribution.account'),
-                'category_id' => Config::integer('members.contribution.category')
+                'category_id' => Config::integer('members.contribution.category'),
             ])->id;
             $this->save();
         }
@@ -83,10 +75,9 @@ class Member extends Model
     /**
      * Archive this member
      *
-     * @param int|null ...$params year
-     * @return void
+     * @param  int|null  ...$params  year
      */
-    public static function archive(int|null ...$params) : void
+    public static function archive(?int ...$params): void
     {
         if (count($params) >= 1) {
             $year = $params[0];
@@ -101,7 +92,7 @@ class Member extends Model
                 'transaction_id' => $member->transaction_id,
                 'created_at' => $member->created_at,
                 'updated_at' => $member->updated_at,
-                'year' => $year
+                'year' => $year,
             ]);
         }
         Member::truncate();

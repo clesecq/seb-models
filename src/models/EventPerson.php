@@ -14,41 +14,34 @@ class EventPerson extends Model
         'event_id',
         'person_id',
         'transaction_id',
-        'data'
+        'data',
     ];
 
     protected $casts = [
-        'data' => 'object'
+        'data' => 'object',
     ];
 
     /**
      * Get the event associated with this participant
-     *
-     * @return BelongsTo
      */
-    public function event() : BelongsTo
+    public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
     }
 
     /**
      * Get the person associated with this participant
-     *
-     * @return BelongsTo
      */
-    public function person() : BelongsTo
+    public function person(): BelongsTo
     {
         return $this->belongsTo(Person::class);
     }
 
     /**
      * Get the transaction associated with this participant
-     *
-     * @return BelongsTo
      */
-    public function transaction() : BelongsTo
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class);
     }
-
 }

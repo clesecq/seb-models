@@ -14,21 +14,20 @@ class Account extends Model
     use HasFactory;
 
     protected $fillable = [
-        "id",
+        'id',
         'name',
         'iban',
-        'bic'
+        'bic',
     ];
 
     protected $casts = [
-        'balance' => 'double'
+        'balance' => 'double',
     ];
 
     /**
      * Get all transactions for this account
-     * @return HasMany
      */
-    public function transactions() : HasMany
+    public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }

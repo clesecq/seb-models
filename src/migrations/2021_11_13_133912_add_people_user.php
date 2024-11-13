@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 //phpcs:ignore
+// @codingStandardsIgnoreLine
 class AddPeopleUser extends Migration
 {
     /**
@@ -30,7 +31,7 @@ class AddPeopleUser extends Migration
                 if ($person == null) {
                     $person = DB::table('people')->insert([
                         'firstname' => $user->firstname,
-                        'lastname' => $user->lastname
+                        'lastname' => $user->lastname,
                     ]);
 
                     $person = DB::table('people')
@@ -44,8 +45,6 @@ class AddPeopleUser extends Migration
 
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('firstname');
-        });
-        Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('lastname');
         });
     }
@@ -57,6 +56,6 @@ class AddPeopleUser extends Migration
      */
     public function down()
     {
-        //
+        // TODO: reverse the migration
     }
 }

@@ -15,10 +15,8 @@ class PersonalTransaction extends Model
 
     /**
      * Perform any actions required after the model boots.
-     *
-     * @return void
      */
-    protected static function booted() : void
+    protected static function booted(): void
     {
         static::created(function ($transaction) {
             if (config('recalculate_for_all_transaction', true)) {
@@ -28,34 +26,30 @@ class PersonalTransaction extends Model
     }
 
     protected $casts = [
-        'amount' => 'double'
+        'amount' => 'double',
     ];
 
     protected $fillable = [
         'amount',
         'user_id',
         'personal_account_id',
-        'transaction_id'
+        'transaction_id',
     ];
 
     /**
      * Get the personal account associated with this personal transaction
-     *
-     * @return BelongsTo
      */
     // phpcs:ignore
-    public function personal_account() : BelongsTo
+    public function personal_account(): BelongsTo
     {
         return $this->belongsTo(PersonalAccount::class);
     }
 
     /**
      * Get the transaction associated with this personal transaction
-     *
-     * @return BelongsTo
      */
     // phpcs:ignore
-    public function transaction() : BelongsTo
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class);
     }
