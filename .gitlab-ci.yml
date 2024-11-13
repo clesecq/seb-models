@@ -1,0 +1,34 @@
+image: php:8.3-cli
+stages:
+  - test
+
+default:
+  cache:  # Cache libraries in between jobs
+    key: $CI_COMMIT_REF_SLUG
+    paths:
+      - vendor/
+  before_script:
+    # Install and run Composer
+    - apt-get update -yqq && apt-get install -yqq git
+    - curl --show-error --silent "https://getcomposer.org/installer" | php
+    - php composer.phar install
+
+phpcs:
+  stage: test
+  script:
+    - php composer.phar require --dev squizlabs/php_codesniffer micheh/phpcs-gitlab
+    - ./vendor/bin/phpcs --standard=PSR2 --report=full --report-\\Micheh\\PhpCodeSniffer\\Report\\Gitlab=phpcs-quality-report.json --extensions=php src/
+  artifacts:
+    reports:
+      codequality: phpcs-quality-report.json
+  allow_failure: true
+
+phpstan:
+  stage: test
+  script:
+    - php composer.phar require --dev "larastan/larastan:^2.0"
+    - ./vendor/bin/phpstan analyse src/ --error-format gitlab > phpstan-report.json
+  artifacts:
+    reports:
+      codequality: phpstan-report.json
+  allow_failure: true
