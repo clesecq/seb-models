@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
+// @codingStandardsIgnoreLine
 class RenameUserPersonnalAccessToken extends Migration
 {
     /**
@@ -12,7 +13,8 @@ class RenameUserPersonnalAccessToken extends Migration
      */
     public function up()
     {
-        DB::table("personal_access_tokens")->where('tokenable_type', 'App\Models\User')->update(['tokenable_type' => 'Database\Models\User']);
+        DB::table('personal_access_tokens')->where('tokenable_type', 'App\Models\User')
+            ->update(['tokenable_type' => 'Database\Models\User']);
     }
 
     /**
@@ -22,6 +24,7 @@ class RenameUserPersonnalAccessToken extends Migration
      */
     public function down()
     {
-        DB::table("personal_access_tokens")->where('tokenable_type', 'Database\Models\User')->update(['tokenable_type' => 'App\Models\User']);
+        DB::table('personal_access_tokens')->where('tokenable_type', 'Database\Models\User')
+            ->update(['tokenable_type' => 'App\Models\User']);
     }
 }

@@ -22,6 +22,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         $this->faker->addProvider(new \FakerRestaurant\Provider\en_US\Restaurant($this->faker));
+
         return [
             'name' => $this->faker->beverageName(),
             'price' => $this->faker->randomFloat(2, 0.5, 5),

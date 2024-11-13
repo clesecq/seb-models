@@ -17,11 +17,11 @@ class Person extends Authenticatable
     protected $fillable = [
         'firstname',
         'lastname',
-        'discord_id'
+        'discord_id',
     ];
 
     protected $hidden = [
-        'edu_token'
+        'edu_token',
     ];
 
     protected $appends = ['fullname', 'is_member'];
@@ -31,9 +31,9 @@ class Person extends Authenticatable
      *
      * @return string The full name of the person
      */
-    public function getFullnameAttribute() : string
+    public function getFullnameAttribute(): string
     {
-        return $this->firstname . " " . $this->lastname;
+        return $this->firstname.' '.$this->lastname;
     }
 
     /**
@@ -41,7 +41,7 @@ class Person extends Authenticatable
      *
      * @return bool True if the person is a member, false otherwise
      */
-    public function getIsMemberAttribute() : bool
+    public function getIsMemberAttribute(): bool
     {
         return $this->member()->exists();
     }
@@ -52,7 +52,7 @@ class Person extends Authenticatable
      * @return HasOne The member associated with this person
      */
     // phpcs:ignore
-    public function member() : HasOne
+    public function member(): HasOne
     {
         return $this->hasOne(Member::class);
     }
@@ -63,7 +63,7 @@ class Person extends Authenticatable
      * @return HasMany The archived member associated with this person
      */
     // phpcs:ignore
-    public function archived_members() : HasMany
+    public function archived_members(): HasMany
     {
         return $this->hasMany(ArchivedMember::class);
     }
@@ -74,7 +74,7 @@ class Person extends Authenticatable
      * @return HasMany The sales associated with this person
      */
     // phpcs:ignore
-    public function sales() : HasMany
+    public function sales(): HasMany
     {
         return $this->hasMany(Sale::class);
     }
@@ -85,7 +85,7 @@ class Person extends Authenticatable
      * @return HasMany The users associated with this person
      */
     // phpcs:ignore
-    public function users() : HasMany
+    public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
@@ -96,7 +96,7 @@ class Person extends Authenticatable
      * @return HasOne The transactions associated with this person
      */
     // phpcs:ignore
-    public function personal_account() : HasOne
+    public function personal_account(): HasOne
     {
         return $this->hasOne(PersonalAccount::class);
     }
@@ -107,7 +107,7 @@ class Person extends Authenticatable
      * @return HasMany The events associated with this person
      */
     // phpcs:ignore
-    public function events() : HasMany
+    public function events(): HasMany
     {
         return $this->hasMany(EventPerson::class);
     }

@@ -15,10 +15,8 @@ class ProductMovement extends Pivot
 
     /**
      * Perform any actions required after the model boots.
-     *
-     * @return void
      */
-    protected static function booted() : void
+    protected static function booted(): void
     {
         static::created(function ($movement) {
             $movement->product->recalculate();
@@ -28,18 +26,15 @@ class ProductMovement extends Pivot
     public $timestamps = false;
 
     protected $fillable = [
-        "product_id",
-        "movement_id",
-        "count"
+        'product_id',
+        'movement_id',
+        'count',
     ];
-
 
     /**
      * Get the product associated with this movement
-     *
-     * @return HasOne
      */
-    public function product() : HasOne
+    public function product(): HasOne
     {
         return $this->hasOne(Product::class, 'id', 'product_id');
     }

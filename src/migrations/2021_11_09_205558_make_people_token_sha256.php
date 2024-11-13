@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
+// @codingStandardsIgnoreLine
 class MakePeopleTokenSha256 extends Migration
 {
     /**
@@ -12,10 +13,10 @@ class MakePeopleTokenSha256 extends Migration
      */
     public function up()
     {
-        $people = DB::table("people")->whereNotNull('edu_token')->get();
+        $people = DB::table('people')->whereNotNull('edu_token')->get();
 
         foreach ($people as $p) {
-            DB::table("people")->where('id', $p->id)->update(['edu_token' => hash('sha256', $p->edu_token)]);
+            DB::table('people')->where('id', $p->id)->update(['edu_token' => hash('sha256', $p->edu_token)]);
         }
     }
 

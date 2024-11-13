@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
+// @codingStandardsIgnoreLine
 class AddSalePersonId extends Migration
 {
     /**
@@ -22,18 +23,18 @@ class AddSalePersonId extends Migration
             $sales = DB::table('sales')->get();
             foreach ($sales as $sale) {
                 $transaction = DB::table('transactions')->find($sale->transaction_id);
-                if (!is_null($transaction)) {
 
-                    $other_trans = DB::table('transactions')->where("name", $transaction->name)->get();
+                if (! is_null($transaction)) {
+                    $other_trans = DB::table('transactions')->where('name', $transaction->name)->get();
                     if (count($other_trans) == 2) {
                         foreach ($other_trans as $tr) {
                             if ($tr->id != $transaction->id) {
                                 $ptr = DB::table('personal_transactions')->where('transaction_id', $tr->id)->first();
-
-                                if (!is_null($ptr)) {
+                                if (! is_null($ptr)) {
                                     $pacc = DB::table('personal_accounts')->find($ptr->personal_account_id);
-                                    if (!is_null($pacc)) {
-                                        DB::table('sales')->where('id', $sale->id)->update(['person_id' => $pacc->person_id]);
+                                    if (! is_null($pacc)) {
+                                        DB::table('sales')->where('id', $sale->id)
+                                            ->update(['person_id' => $pacc->person_id]);
                                     }
                                 }
                                 error_log(json_encode($ptr));

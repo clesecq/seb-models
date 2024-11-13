@@ -14,7 +14,7 @@ class AutomatedTransaction extends Model
 
     protected $casts = [
         'rectification' => 'boolean',
-        'amount' => 'double'
+        'amount' => 'double',
     ];
 
     protected $fillable = [
@@ -25,6 +25,6 @@ class AutomatedTransaction extends Model
         'account_id',
         'category_id',
         'frequency',
-        'day'
+        'day',
     ];
 }

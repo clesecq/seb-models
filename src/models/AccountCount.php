@@ -17,20 +17,18 @@ class AccountCount extends Model
         'transaction_id',
         'type',
         'data',
-        'balance'
+        'balance',
     ];
 
     protected $casts = [
         'data' => 'array',
-        'balance' => 'double'
+        'balance' => 'double',
     ];
 
     /**
      * Get the transaction associated with this account count
-     *
-     * @return BelongsTo
      */
-    public function transaction() : BelongsTo
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class);
     }

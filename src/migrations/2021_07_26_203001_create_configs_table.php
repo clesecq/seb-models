@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+// @codingStandardsIgnoreLine
 class CreateConfigsTable extends Migration
 {
     /**
@@ -15,7 +16,7 @@ class CreateConfigsTable extends Migration
     {
         Schema::create('configs', function (Blueprint $table) {
             $table->string('name')->primary();
-            $table->text('value')->default("");
+            $table->text('value')->default('');
         });
     }
 

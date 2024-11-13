@@ -13,12 +13,7 @@ class Movement extends Model
 {
     use HasFactory;
 
-
-    /**
-     *
-     * @return HasMany
-     */
-    public function products() : HasMany
+    public function products(): HasMany
     {
         return $this->hasMany(ProductMovement::class);
     }
@@ -26,10 +21,10 @@ class Movement extends Model
     protected $fillable = [
         'name',
         'rectification',
-        'user_id'
+        'user_id',
     ];
 
     protected $casts = [
-        'rectification' => 'boolean'
+        'rectification' => 'boolean',
     ];
 }

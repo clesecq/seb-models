@@ -12,14 +12,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class TransactionCategory extends Model
 {
     protected $fillable = [
-        "id",
-        "name"
+        'id',
+        'name',
     ];
 
     /**
      * Get the transactions associated with this category
-     *
-     * @return HasMany
      */
     public function transactions(): HasMany
     {

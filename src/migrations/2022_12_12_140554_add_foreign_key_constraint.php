@@ -1,11 +1,10 @@
 <?php
 
-use Database\Models\ProductCategory;
-use Database\Models\Transaction;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+// @codingStandardsIgnoreLine
 class AddForeignKeyConstraint extends Migration
 {
     /**

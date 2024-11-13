@@ -19,40 +19,34 @@ class Product extends Model
         'price',
         'category_id',
         'alert_level',
-        'salable'
+        'salable',
     ];
 
     protected $casts = [
         'price' => 'double',
-        'salable' => 'boolean'
+        'salable' => 'boolean',
     ];
 
     /**
      * Get the category associated with this product
-     *
-     * @return BelongsTo
      */
-    public function category() : BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(ProductCategory::class);
     }
 
     /**
      * Get the transactions associated with this product
-     *
-     * @return HasMany
      */
-    public function movements() : HasMany
+    public function movements(): HasMany
     {
         return $this->hasMany(ProductMovement::class);
     }
 
     /**
      * Recalculate the stock of this product
-     *
-     * @return void
      */
-    public function recalculate() : void
+    public function recalculate(): void
     {
         $this->count = $this->movements->sum('count');
         $this->save();
@@ -60,10 +54,8 @@ class Product extends Model
 
     /**
      * Recalculate the stock of all products
-     *
-     * @return void
      */
-    public static function recalculateAll() : void
+    public static function recalculateAll(): void
     {
         foreach (static::all() as $product) {
             $product->recalculate();

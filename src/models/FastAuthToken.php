@@ -18,26 +18,27 @@ class FastAuthToken extends Model
     use Prunable;
 
     protected $primaryKey = 'token';
+
     public $incrementing = false;
+
     protected $keyType = 'string';
+
     public $timestamps = false;
 
     protected $fillable = [
         'token',
         'user_id',
-        'accepted'
+        'accepted',
     ];
 
     protected $casts = [
-        'accepted' => 'boolean'
+        'accepted' => 'boolean',
     ];
 
     /**
      * Get the prunable model query.
-     *
-     * @return Builder
      */
-    public function prunable() : Builder
+    public function prunable(): Builder
     {
         return static::where('created_at', '<=', now()->subMinutes(5));
     }
@@ -58,10 +59,8 @@ class FastAuthToken extends Model
 
     /**
      * Get the user associated with this fast auth token
-     *
-     * @return BelongsTo
      */
-    public function user() : BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
