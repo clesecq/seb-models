@@ -15,8 +15,6 @@ class Sale extends Model
 
     /**
      * Get the movement associated with this sale
-     *
-     * @return BelongsTo
      */
     public function movement(): BelongsTo
     {
@@ -25,8 +23,6 @@ class Sale extends Model
 
     /**
      * Get the transaction associated with this sale
-     *
-     * @return BelongsTo
      */
     public function transaction(): BelongsTo
     {
@@ -36,6 +32,6 @@ class Sale extends Model
     protected $fillable = [
         'transaction_id',
         'movement_id',
-        'person_id'
+        'person_id',
     ];
 }

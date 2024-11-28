@@ -15,8 +15,6 @@ class Transaction extends Model
 
     /**
      * Perform any actions required after the model boots.
-     *
-     * @return void
      */
     protected static function booted(): void
     {
@@ -29,7 +27,7 @@ class Transaction extends Model
 
     protected $casts = [
         'rectification' => 'boolean',
-        'amount' => 'double'
+        'amount' => 'double',
     ];
 
     protected $fillable = [
@@ -38,13 +36,11 @@ class Transaction extends Model
         'rectification',
         'user_id',
         'account_id',
-        'category_id'
+        'category_id',
     ];
 
     /**
      * Get the account associated with this transaction
-     *
-     * @return BelongsTo
      */
     public function account(): BelongsTo
     {
@@ -53,8 +49,6 @@ class Transaction extends Model
 
     /**
      * Get the category associated with this transaction
-     *
-     * @return BelongsTo
      */
     public function category(): BelongsTo
     {

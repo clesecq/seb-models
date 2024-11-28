@@ -2,9 +2,10 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
+// @codingStandardsIgnoreLine
 class CreateTransactionCategoriesTable extends Migration
 {
     /**
@@ -16,7 +17,7 @@ class CreateTransactionCategoriesTable extends Migration
     {
         Schema::create('transaction_categories', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
+            $table->string('name');
             $table->timestamps();
         });
 

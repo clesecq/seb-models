@@ -14,20 +14,20 @@ class Config extends Model
     use HasFactory;
 
     protected $fillable = [
-        "name",
-        "value"
+        'name',
+        'value',
     ];
 
     protected $primaryKey = 'name';
+
     public $timestamps = false;
 
     /**
      * Get the float value of this config entry
      *
-     * @param string $name The name of the config entry
-     * @return float
+     * @param  string  $name  The name of the config entry
      */
-    public static function number(string $name) : float
+    public static function number(string $name): float
     {
         return floatval(static::findOrFail($name)->value);
     }
@@ -35,10 +35,9 @@ class Config extends Model
     /**
      * Get the int value of this config entry
      *
-     * @param string $name The name of the config entry
-     * @return int
+     * @param  string  $name  The name of the config entry
      */
-    public static function integer(string $name) : int
+    public static function integer(string $name): int
     {
         return intval(static::findOrFail($name)->value);
     }
@@ -46,13 +45,13 @@ class Config extends Model
     /**
      * Get the string value of this config entry
      *
-     * @param string $name The name of the config entry
-     * @param array|string $param The data to use for the template
-     * @return string
+     * @param  string  $name  The name of the config entry
+     * @param  array|string  $param  The data to use for the template
      */
-    public static function format(string $name, $param) : string
+    public static function format(string $name, $param): string
     {
         $engine = new Engine;
+
         return $engine->render(static::findOrFail($name)->value, $param);
     }
 }

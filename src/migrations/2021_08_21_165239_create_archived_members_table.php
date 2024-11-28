@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+// @codingStandardsIgnoreLine
 class CreateArchivedMembersTable extends Migration
 {
     /**
@@ -19,7 +20,9 @@ class CreateArchivedMembersTable extends Migration
             $table->string('lastname');
             $table->string('discord_id')->nullable()->default(null);
             $table->foreignId('transaction_id')->nullable()->default(null);
-            $table->integer('year')->comment('This is the year of archiving. Eg. if year is 2020 this means the archived member was a member during school year 2019/2020 ');
+            $table->integer('year')->comment('This is the year of archiving. '
+                . 'Eg. if year is 2020 this means the archived member was a member '
+                . 'during school year 2019/2020');
             $table->timestamps();
         });
     }

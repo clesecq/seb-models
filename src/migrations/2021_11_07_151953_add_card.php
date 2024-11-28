@@ -5,6 +5,7 @@ use Database\Models\Config;
 use Database\Models\TransactionCategory;
 use Illuminate\Database\Migrations\Migration;
 
+// @codingStandardsIgnoreLine
 class AddCard extends Migration
 {
     /**

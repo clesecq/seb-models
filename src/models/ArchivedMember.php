@@ -14,7 +14,7 @@ class ArchivedMember extends Model
     use HasFactory;
 
     protected $casts = [
-        'paid' => 'boolean'
+        'paid' => 'boolean',
     ];
 
     protected $fillable = [
@@ -22,46 +22,40 @@ class ArchivedMember extends Model
         'transaction_id',
         'created_at',
         'updated_at',
-        'year'
+        'year',
     ];
 
     protected $appends = ['paid', 'school_year'];
 
     /**
      * Check if this member has paid
-     *
-     * @return bool
      */
-    public function getPaidAttribute() : bool
+    public function getPaidAttribute(): bool
     {
         return $this->transaction_id != null;
     }
 
     /**
      * Get the string of school year for this archived member
-     *
-     * @return string
      */
-    public function getSchoolYearAttribute() : string
+    public function getSchoolYearAttribute(): string
     {
-        return ($this->year - 1) . '/' . ($this->year);
+        return ($this->year - 1).'/'.($this->year);
     }
 
     /**
      * Get the transaction associated with this archived member
-     * @return BelongsTo
      */
-    public function transaction() : BelongsTo
+    public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class);
     }
 
     /**
      * Get the person associated with this archived member
-     * @return BelongsTo
      */
     // phpcs:ignore
-    public function person() : BelongsTo
+    public function person(): BelongsTo
     {
         return $this->belongsTo(Person::class);
     }

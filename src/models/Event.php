@@ -21,7 +21,7 @@ class Event extends Model
         'start' => 'datetime',
         'end' => 'datetime',
         'price' => 'double',
-        'price_member' => 'double'
+        'price_member' => 'double',
     ];
 
     protected $fillable = [
@@ -33,26 +33,21 @@ class Event extends Model
         'price',
         'price_member',
         'data',
-        'category_id'
+        'category_id',
     ];
 
     /**
      * Get the category associated with this event
-     *
-     * @return BelongsTo
      */
-    public function category() : BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(TransactionCategory::class);
     }
 
     /**
      * Get the participants associated with this event
-     *
-     * @return HasMany
      */
-    // phpcs:ignore
-    public function participations() : HasMany
+    public function participations(): HasMany
     {
         return $this->hasMany(EventPerson::class);
     }
@@ -60,74 +55,74 @@ class Event extends Model
     /**
      * Get the price for a participant of this event
      *
-     * @param mixed $data data on inscription of the participant
-     * @param Person $person the participant to get the price for
-     * @return float|int
+     * @param  mixed  $data  data on inscription of the participant
+     * @param  Person  $person  the participant to get the price for
      */
-    public function price(mixed $data, Person $person) : int|float
+    public function price(mixed $data, Person $person): int|float
     {
         $member = $person->member()->exists();
         $price = $member ? $this->price_member : $this->price;
 
-        foreach($this->data as $field) {
-            if ($field["type"] == "boolean") {
-                if ($data[$field["name"]]) {
-                    $price += $member ? $field["price_member"] : $field["price"];
+        foreach ($this->data as $field) {
+            if ($field['type'] == 'boolean') {
+                if ($data[$field['name']]) {
+                    $price += $member ? $field['price_member'] : $field['price'];
                 }
-            } else if ($field["type"] == "numeric") {
-                $price += ($member ? $field["price_member"] : $field["price"]) * $data[$field["name"]];
-            } else if ($field["type"] == "select") {
+            } elseif ($field['type'] == 'numeric') {
+                $price += ($member ? $field['price_member'] : $field['price']) * $data[$field['name']];
+            } elseif ($field['type'] == 'select') {
                 $good = false;
-                foreach($field["values"] as $val) {
-                    if ($data[$field["name"]] == $val["name"]) {
-                        $price += $member ? $val["price_member"] : $val["price"];
+                foreach ($field['values'] as $val) {
+                    if ($data[$field['name']] == $val['name']) {
+                        $price += $member ? $val['price_member'] : $val['price'];
                         $good = true;
                         break;
                     }
                 }
-                if (!$good)
+                if (! $good) {
                     abort(400);
+                }
             }
         }
-        
+
         return $price;
     }
 
     /**
      * Get the validation rules for this event
      *
-     * @param bool $sometimes if the data is sometimes valid
-     * @return array
+     * @param  bool  $sometimes  if the data is sometimes valid
      */
-    public function validator(bool $sometimes = false) : array
+    public function validator(bool $sometimes = false): array
     {
         $output = [];
         $keys = [];
         foreach ($this->data as $element) {
-            switch ($element["type"]) {
-                case "string":
-                    $output['data.' . $element["name"]] = ['required', 'string'];
+            switch ($element['type']) {
+                case 'string':
+                    $output['data.'.$element['name']] = ['required', 'string'];
                     break;
-                case "boolean":
-                    $output['data.' . $element["name"]] = ['required', 'boolean'];
+                case 'boolean':
+                    $output['data.'.$element['name']] = ['required', 'boolean'];
                     break;
-                case "numeric":
-                    $output['data.' . $element["name"]] = ['required', 'numeric'];
+                case 'numeric':
+                    $output['data.'.$element['name']] = ['required', 'numeric'];
                     break;
-                case "select":
+                case 'select':
                     $values = [];
-                    foreach($element["values"] as $val) {
-                        $values[] = $val["name"];
+                    foreach ($element['values'] as $val) {
+                        $values[] = $val['name'];
                     }
-                    $output['data.' . $element["name"]] = ['required', Rule::in($values)];
+                    $output['data.'.$element['name']] = ['required', Rule::in($values)];
                     break;
             }
             if ($sometimes) {
-                $output['data.' . $element["name"]][] = 'sometimes';
+                $output['data.'.$element['name']][] = 'sometimes';
             }
-            $keys[] = $element["name"];
+            $keys[] = $element['name'];
         }
-        $output["data"] = ['required', 'array:' . join(",", $keys)];
+        $output['data'] = ['required', 'array:'.implode(',', $keys)];
+
         return $output;
     }
 }

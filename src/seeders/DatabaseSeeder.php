@@ -37,27 +37,27 @@ class DatabaseSeeder extends Seeder
         $year = $date->format('Y');
 
         // Summer Hollidays
-        if ($date >= new DateTime($year . '-07-06') && $date <= new DateTime($year . '-09-02')) {
+        if ($date >= new DateTime($year.'-07-06') && $date <= new DateTime($year.'-09-02')) {
             return false;
         }
 
         // All Saints' Hollidays
-        if ($date >= new DateTime($year . '-10-23') && $date <= new DateTime($year . '-11-08')) {
+        if ($date >= new DateTime($year.'-10-23') && $date <= new DateTime($year.'-11-08')) {
             return false;
         }
 
         // Christmas Hollidays
-        if ($date >= new DateTime($year . '-12-18') || $date <= new DateTime($year . '-01-03')) {
+        if ($date >= new DateTime($year.'-12-18') || $date <= new DateTime($year.'-01-03')) {
             return false;
         }
 
         // Winter Hollidays
-        if ($date >= new DateTime($year . '-02-05') && $date <= new DateTime($year . '-02-21')) {
+        if ($date >= new DateTime($year.'-02-05') && $date <= new DateTime($year.'-02-21')) {
             return false;
         }
 
         // Spring Hollidays
-        if ($date >= new DateTime($year . '-04-09') && $date <= new DateTime($year . '-04-25')) {
+        if ($date >= new DateTime($year.'-04-09') && $date <= new DateTime($year.'-04-25')) {
             return false;
         }
 
@@ -92,7 +92,7 @@ class DatabaseSeeder extends Seeder
         $count = AccountCount::create([
             'type' => 'value',
             'data' => ['amount' => $bankAmount],
-            'balance' => $bankAmount
+            'balance' => $bankAmount,
         ]);
 
         $transaction = Transaction::create([
@@ -101,7 +101,7 @@ class DatabaseSeeder extends Seeder
             'rectification' => true,
             'user_id' => 1, // Force ROOT
             'account_id' => 1000, // Bank account
-            'category_id' => Config::integer('counts.category')
+            'category_id' => Config::integer('counts.category'),
         ]);
 
         $transaction->created_at = $date;
@@ -118,7 +118,7 @@ class DatabaseSeeder extends Seeder
         $count = AccountCount::create([
             'type' => 'value',
             'data' => ['amount' => $registerAmount],
-            'balance' => $registerAmount
+            'balance' => $registerAmount,
         ]);
 
         $transaction = Transaction::create([
@@ -127,7 +127,7 @@ class DatabaseSeeder extends Seeder
             'rectification' => true,
             'user_id' => 1, // Force ROOT
             'account_id' => 1, // Cash Register account
-            'category_id' => Config::integer('counts.category')
+            'category_id' => Config::integer('counts.category'),
         ]);
 
         $transaction->created_at = $date;
@@ -150,7 +150,7 @@ class DatabaseSeeder extends Seeder
         foreach (Product::all() as $product) {
             $products_data['data'][] = [
                 'id' => $product->id,
-                'count' => $faker->numberBetween(3, 20)
+                'count' => $faker->numberBetween(3, 20),
             ];
         }
 
@@ -159,20 +159,20 @@ class DatabaseSeeder extends Seeder
         $movement = Movement::create([
             'name' => Config::format('counts.movement', ['count' => $count->toArray()]),
             'user_id' => 1, // Force ROOT
-            'rectification' => true
+            'rectification' => true,
         ]);
         $movement->created_at = $date;
         $movement->updated_at = $date;
         $movement->save();
 
-        foreach ($products_data["data"] as $product) {
-            $p = Product::findOrFail($product["id"]);
+        foreach ($products_data['data'] as $product) {
+            $p = Product::findOrFail($product['id']);
             $p->recalculate();
 
             $data = [
-                "movement_id" => $movement->id,
-                "product_id" => $product["id"],
-                "count" => $product["count"] - $p->count
+                'movement_id' => $movement->id,
+                'product_id' => $product['id'],
+                'count' => $product['count'] - $p->count,
             ];
 
             ProductMovement::create($data);
@@ -192,26 +192,28 @@ class DatabaseSeeder extends Seeder
 
         for ($i = 0; $i < $number; $i++) {
             $products_data = ['products' => []];
-            $products_number = $faker->biasedNumberBetween(1, 5,  function ($x) {
+            $products_number = $faker->biasedNumberBetween(1, 5, function ($x) {
                 return 1 / (5 * $x + 1) - 0.167;
             });
             $products = $faker->randomElements(Product::all(), $products_number);
 
             foreach ($products as $product) {
-                $product_count = $faker->biasedNumberBetween(1, 5,  function ($x) {
+                $product_count = $faker->biasedNumberBetween(1, 5, function ($x) {
                     return 1 / (5 * $x + 1) - 0.167;
                 });
 
                 // We don't have enough of product.
-                if ($product->count < $product_count)
+                if ($product->count < $product_count) {
                     continue;
+                }
 
                 $products_data['products'][] = ['id' => $product->id, 'count' => $product_count];
             }
 
             // We didn't add any product.
-            if (count($products_data['products']) == 0)
+            if (count($products_data['products']) == 0) {
                 continue;
+            }
 
             // We create the sale (needed to have the ID for the names)
             $sale = Sale::create();
@@ -219,20 +221,20 @@ class DatabaseSeeder extends Seeder
 
             // We create the movement
             $movement = Movement::create([
-                "name" => Config::format("sales.movement", ["sale" => $sale->attributesToArray()]),
-                "rectification" => false,
-                "user_id" => 1 // Force ROOT
+                'name' => Config::format('sales.movement', ['sale' => $sale->attributesToArray()]),
+                'rectification' => false,
+                'user_id' => 1, // Force ROOT
             ]);
             $movement->created_at = $date;
             $movement->updated_at = $date;
             $movement->save();
 
             // We fill the movement with the products
-            foreach ($products_data["products"] as $product) {
+            foreach ($products_data['products'] as $product) {
                 $data = [
-                    "movement_id" => $movement->id,
-                    "product_id" => $product["id"],
-                    "count" => -$product["count"]
+                    'movement_id' => $movement->id,
+                    'product_id' => $product['id'],
+                    'count' => -$product['count'],
                 ];
 
                 // Create a product movement
@@ -241,17 +243,17 @@ class DatabaseSeeder extends Seeder
                 // Should never fail, but we never know
                 $p = Product::findOrFail($product['id']);
                 // Add to the amount
-                $amount += $p->price * intval($product["count"]);
+                $amount += $p->price * intval($product['count']);
             }
 
             // We create the transaction
             $transaction = Transaction::create([
-                'name' => Config::format("sales.transaction", ["sale" => $sale->attributesToArray()]),
+                'name' => Config::format('sales.transaction', ['sale' => $sale->attributesToArray()]),
                 'amount' => $amount,
                 'rectification' => false,
                 'account_id' => Config::integer('sales.account'),
                 'category_id' => Config::integer('sales.category'),
-                'user_id' => 1 // Force ROOT
+                'user_id' => 1, // Force ROOT
             ]);
             $transaction->created_at = $date;
             $transaction->updated_at = $date;
@@ -285,12 +287,12 @@ class DatabaseSeeder extends Seeder
 
         // Create the from transaction
         $sub_transaction = Transaction::create([
-            'name' => Config::format("transferts.transaction", ["transfert" => $transfert->attributesToArray()]),
+            'name' => Config::format('transferts.transaction', ['transfert' => $transfert->attributesToArray()]),
             'amount' => -$amount,
             'rectification' => false,
             'account_id' => 1,
             'category_id' => Config::integer('transferts.category'),
-            'user_id' => 1
+            'user_id' => 1,
         ]);
         $sub_transaction->created_at = $date;
         $sub_transaction->updated_at = $date;
@@ -298,12 +300,12 @@ class DatabaseSeeder extends Seeder
 
         // Create the to transaction
         $add_transaction = Transaction::create([
-            'name' => Config::format("transferts.transaction", ["transfert" => $transfert->attributesToArray()]),
+            'name' => Config::format('transferts.transaction', ['transfert' => $transfert->attributesToArray()]),
             'amount' => $amount,
             'rectification' => false,
             'account_id' => 1000,
             'category_id' => Config::integer('transferts.category'),
-            'user_id' => 1
+            'user_id' => 1,
         ]);
         $add_transaction->created_at = $date;
         $add_transaction->updated_at = $date;
@@ -338,17 +340,17 @@ class DatabaseSeeder extends Seeder
 
         // Create the purchase
         $purchase = Purchase::create([
-            'name' => "Restock " . $date->format('d/m/Y')
+            'name' => 'Restock '.$date->format('d/m/Y'),
         ]);
 
         // Create the transaction
         $transaction = Transaction::create([
-            'name' => Config::format("purchases.transaction", ["purchase" => $purchase->attributesToArray()]),
+            'name' => Config::format('purchases.transaction', ['purchase' => $purchase->attributesToArray()]),
             'amount' => -$price,
             'rectification' => false,
             'account_id' => 1000, // Pay with Bank account
             'category_id' => 2,
-            'user_id' => 1 // By ROOT
+            'user_id' => 1, // By ROOT
         ]);
         $transaction->created_at = $date;
         $transaction->updated_at = $date;
@@ -356,20 +358,20 @@ class DatabaseSeeder extends Seeder
 
         // We create the movement
         $movement = Movement::create([
-            "name" => Config::format("purchases.movement", ["purchase" => $purchase->attributesToArray()]),
-            "rectification" => false,
-            "user_id" => 1 // ROOT
+            'name' => Config::format('purchases.movement', ['purchase' => $purchase->attributesToArray()]),
+            'rectification' => false,
+            'user_id' => 1, // ROOT
         ]);
         $movement->created_at = $date;
         $movement->updated_at = $date;
         $movement->save();
 
         // We fill the movement with the products
-        foreach ($products_data["products"] as $product) {
+        foreach ($products_data['products'] as $product) {
             $data = [
-                "movement_id" => $movement->id,
-                "product_id" => $product["id"],
-                "count" => $product["count"]
+                'movement_id' => $movement->id,
+                'product_id' => $product['id'],
+                'count' => $product['count'],
             ];
 
             // Create a product movement
@@ -392,19 +394,19 @@ class DatabaseSeeder extends Seeder
             $person = Person::create([
                 'firstname' => $faker->firstName(),
                 'lastname' => $faker->lastName(),
-                'discord_id' => $faker->numerify('########################')
+                'discord_id' => $faker->numerify('########################'),
             ]);
             $person->created_at = $date;
             $person->updated_at = $date;
             $person->save();
 
             $member = Member::create([
-                'person_id' => $person->id
+                'person_id' => $person->id,
             ]);
             $member->created_at = $date;
             $member->updated_at = $date;
             // Pay
-            $message = Config::format("members.contribution.transaction", ["member" => $person->attributesToArray()]);
+            $message = Config::format('members.contribution.transaction', ['member' => $person->attributesToArray()]);
 
             $transaction = Transaction::create([
                 'name' => $message,
@@ -412,7 +414,7 @@ class DatabaseSeeder extends Seeder
                 'rectification' => false,
                 'user_id' => 1,
                 'account_id' => Config::integer('members.contribution.account'),
-                'category_id' => Config::integer('members.contribution.category')
+                'category_id' => Config::integer('members.contribution.category'),
             ]);
 
             $transaction->created_at = $date;
@@ -443,7 +445,6 @@ class DatabaseSeeder extends Seeder
         // Set the stocks up
         $this->initStocks($faker, $start);
 
-
         $dates = $this->getAllDates($start, $end);
 
         // Show a progress bar while generating day-by-day data, as it can take quite some time.
@@ -454,13 +455,13 @@ class DatabaseSeeder extends Seeder
             $this->command->getOutput()->progressAdvance();
 
             // Friday, go to the bank, buy sotcks
-            if ($date->format("w") == 5) {
+            if ($date->format('w') == 5) {
                 $this->goBank($faker, $date);
                 $this->goShopping($faker, $date);
             }
 
             // Sike, members!
-            if ($date == new DateTime($date->format('Y') . '-09-03')) {
+            if ($date == new DateTime($date->format('Y').'-09-03')) {
                 $this->addMembers($faker, $date);
             }
         }

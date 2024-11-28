@@ -15,8 +15,6 @@ class Transfert extends Model
 
     /**
      * Get the sub transaction associated with this transfert
-     *
-     * @return BelongsTo
      */
     // phpcs:ignore
     public function sub_transaction(): BelongsTo
@@ -26,8 +24,6 @@ class Transfert extends Model
 
     /**
      * Get the add transaction associated with this transfert
-     *
-     * @return BelongsTo
      */
     // phpcs:ignore
     public function add_transaction(): BelongsTo
